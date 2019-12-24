@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue Todo</title>
+</head>
+
+<body>
+    <div id="app">
+        <h1>Todo App</h1>
+        <input type="text" v-model="inputText" v-on:keyup.enter="addItem">
+        <button v-on:click="addItem">add</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+
+        new Vue({
+            el: '#app',
+            data: {
+                inputText: ''
+            },
+            components: {
+
+            },
+            methods: {
+                addItem: function (event) {
+                    var value = this.inputText;
+
+                    // axios.post('address', this.inputText);
+                    // $.ajax({
+                    //     type: 'POST'
+                    // })
+
+                    localStorage.setItem(value, value);
+                    this.inputText = '';
+                },
+                fetchItems: function () {
+
+                }
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>
