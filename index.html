@@ -13,6 +13,12 @@
         <h1>Todo App</h1>
         <input type="text" v-model="inputText" v-on:keyup.enter="addItem">
         <button v-on:click="addItem">add</button>
+        <div>
+            <li v-for="(todoItem, index) in todoItems">
+                {{ todoItem }}
+                <button v-on:click="removeItem(todoItem, index)">remove</button>
+            </li>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -21,15 +27,21 @@
         new Vue({
             el: '#app',
             data: {
-                inputText: ''
+                inputText: '',
+                todoItems: []
             },
             components: {
 
+            },
+            // Vue에서는 Life Cycle함수가 제공된다. Ref: https://vuejs.org/images/lifecycle.png
+            created: function () { // component or instance가 생성되었을 때 call 된다.
+                this.fetchItems();
             },
             methods: {
                 addItem: function (event) {
                     var value = this.inputText;
 
+                    // NOTE: axios: Promise based HTTP client
                     // axios.post('address', this.inputText);
                     // $.ajax({
                     //     type: 'POST'
@@ -37,9 +49,19 @@
 
                     localStorage.setItem(value, value);
                     this.inputText = '';
+                    this.todoItems.push(value);
                 },
                 fetchItems: function () {
-
+                    // axios.get('/todos');
+                    for (var i = 0; i < localStorage.length; i += 1) {
+                        var value = localStorage.key(i);
+                        this.todoItems.push(value);
+                    }
+                },
+                removeItem: function (todoItem, index) {
+                    console.log(todoItem, 'removed index: ', index);
+                    this.todoItems.splice(index, 1);
+                    localStorage.removeItem(todoItem)
                 }
             }
         });
